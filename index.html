@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quotes</title>
+  </head>
+  <body>
+    <div class="card">
+      <blockquote class="blockquote">
+        <p>loading...</p>
+      </blockquote>
+      <button class="btn">New Quote</button>
+    </div>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Redressed&display=swap");
+
+      body {
+        font-family: "Redressed", cursive;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        font-weight: bolder;
+      }
+
+      button {
+        font-family: "Redressed", cursive;
+        width: 140px;
+        height: 60px;
+        font-size: 25px;
+        border-radius: 5px;
+        font-weight: bold;
+        border: 7px double #8d00be;
+        background-image: radial-gradient(
+          circle,
+          #ffffff,
+          #d8ccf8,
+          #b997eb,
+          #a15fd8,
+          #8d00be
+        );
+      }
+
+      .card {
+        width: 90%;
+        max-width: 700px;
+      }
+      .card-body {
+        padding: 50px;
+      }
+
+      p {
+        font-size: 35px;
+        -webkit-text-stroke: 1px white;
+        letter-spacing: 2px;
+      }
+    </style>
+
+    <script>
+      window.onload = () => {
+        const button = document.querySelector("button");
+        const quote = document.querySelector("blockquote p");
+        const body = document.querySelector("body");
+
+        async function updateQuote() {
+          button.innerHTML = "Loading...";
+          const response = await fetch("https://api.quotable.io/random");
+          const data = await response.json();
+          const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+          body.style.backgroundColor = "#" + randomColor;
+          if (response.ok) {
+            button.innerHTML = "New Quote";
+            quote.innerHTML = `&ldquo;${data.content}&rdquo;`;
+          } else {
+            quote.textContent = "An error ocurred";
+            console.log(data);
+          }
+        }
+
+        button.addEventListener("click", updateQuote);
+        updateQuote();
+      };
+    </script>
+  </body>
+</html>
